@@ -10,13 +10,12 @@ def main():
 
     myworld = world.World()
     horse = characters.Horse()
-
-    screen = render.init()
+    renderer = render.Renderer()
 
     # main game loop
     while True:
         clock.tick(60)
-        render.render(screen)
+        renderer.render()
         events.handle_events()
 
 main()
