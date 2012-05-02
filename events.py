@@ -7,4 +7,5 @@ def handle_events():
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == K_ESCAPE):
             sys.exit(0)
         else:
-            print event
+            pass
+#            print event
