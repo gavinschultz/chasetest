@@ -12,9 +12,9 @@ def main():
     renderer = render.Renderer()
     myworld = world.World()
 
-    all_sprites = pygame.sprite.Group()
+    all_sprites = pygame.sprite.RenderUpdates()
 
-    for i in range(20):
+    for i in range(50):
         horse = characters.Horse()
         horse.rect.top = random.randint(0,renderer.screen.get_rect().height - horse.rect.height)
         horse.rect.left = random.randint(0,renderer.screen.get_rect().width)
@@ -26,7 +26,7 @@ def main():
 
     # main game loop
     while True:
-        clock.tick(60)
+        clock.tick(59)
         for horse in all_sprites:
             horse.rect.left -= horse.speed
             if horse.rect.right < 0:
