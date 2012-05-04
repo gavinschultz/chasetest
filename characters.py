@@ -3,35 +3,32 @@ import os
 import random
 import pyglet
 import render
+import config.sprites
 
 class Horse():
     width = 64
     height = 64
-    spritesheet_path = 'images/horse_skeleton_ss.png'
-    render.sprite_manager.register_spritesheet(spritesheet_path, 1, 12)
 
     @staticmethod
     def create_random():
-        horse = Horse()
-        horse.x = random.randint(0, window.width - horse.width)
-        horse.y = random.randint(0, window.height - horse.height)
-        horse.index = random.randint(0, horse.image_tex_seq.columns-1)
+        horse = Horse(config.sprites.BLEDAS_HORSE)
+        horse.x = random.randint(0, 640 - horse.width)
+        horse.y = random.randint(0, 480 - horse.height)
+        horse._sprite.index = random.randint(0, 11)
         horse.speed = random.uniform(3.0, 4.5)
         return horse
 
-    def __init__(self, image):
-        self._sprite = render.sprite_manager.create(Horse.spritesheet_path)
+    def __init__(self, sprite_config):
+        self._sprite = render.sprite_manager.create(sprite_config)
         self.speed = 0
         self.frame_tick = 0
         self.x = 0
         self.y = 0
         self.index = 0
-        self.image = self.image_tex_seq[self.index]
+        self.image = self._sprite.image
         self.tick = 0
 
     def update(self):
-        self.sprite.x = self.x
-        self.sprite.y = self.y
         self.tick += 1
         if self.tick > 1:
             self.tick = 0
@@ -40,6 +37,7 @@ class Horse():
 
     def advance_frame(self):
         self.index += 1
+        self._sprite.set_frame(self.index)
 #        if self.index >= self.image_tex_seq.columns:
 #            self.index = 0
 #        self.sprite.image = self.image_tex_seq[self.index]

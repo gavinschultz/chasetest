@@ -4,15 +4,18 @@ import random
 import characters
 import profile
 import render
+import config
 
 window = pyglet.window.Window()
 pyglet.gl.glClearColor(1, 1, 1, 1)
+
 all_horses = []
-render.sprite_manager.register_spritesheet('images/horse_skeleton_ss.png', 1, 12)
 fps_display = pyglet.clock.ClockDisplay()
 
+config.install()
+
 for i in range(10):
-    all_horses.append(create_horse())
+    all_horses.append(characters.Horse.create_random())
 
 def update(dt):
     for horse in all_horses:
