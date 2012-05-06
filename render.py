@@ -39,7 +39,7 @@ class SpriteManager:
         if not self.is_registered(sprite_config):
             raise SpriteNotRegisteredError(sprite_config.spritesheet_path)
         texture = self.textures[sprite_config]
-        anim_frames = [pyglet.image.AnimationFrame(img, 0.1) for img in texture]
+        anim_frames = [pyglet.image.AnimationFrame(img, 0.033) for img in texture]
         anim = pyglet.image.Animation(anim_frames)
         sprite = Sprite(anim, batch=self.all)
         return sprite

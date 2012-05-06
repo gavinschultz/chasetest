@@ -8,7 +8,6 @@ import config
 
 window = pyglet.window.Window()
 pyglet.gl.glClearColor(1, 1, 1, 1)
-
 all_horses = []
 fps_display = pyglet.clock.ClockDisplay()
 
