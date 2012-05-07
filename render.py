@@ -27,7 +27,7 @@ class SpriteManager:
         self.textures = {}
 
     def register_spritesheet(self, sprite_config):
-        print('Registering spritesheet {}'.format(sprite_config.spritesheet_path))
+        print('Registering spritesheet {0}'.format(sprite_config.spritesheet_path))
         image = pyglet.image.load(sprite_config.spritesheet_path)
         image_seq = pyglet.image.ImageGrid(image, sprite_config.rows, sprite_config.columns)
         self.textures[sprite_config] = pyglet.image.TextureGrid(image_seq)

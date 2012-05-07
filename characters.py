@@ -20,7 +20,7 @@ class Horse():
 
     def __init__(self, sprite_config):
         self._sprite = render.sprite_manager.create(sprite_config)
-        self.speed = 0
+        self.speed = 1
         self.frame_tick = 0
         self.x = 0
         self.y = 0
@@ -29,6 +29,14 @@ class Horse():
         self.tick = 0
 
     def update(self):
+#        print self.x, self.speed
+#        if self.x > 500:
+#            self.speed = -1
+#        elif self.x < 0:
+#            self.speed = 1
+#        self.x += self.speed
+        self._sprite.x = self.x
+#        print self.x, self.speed
         self.tick += 1
         if self.tick > 1:
             self.tick = 0
