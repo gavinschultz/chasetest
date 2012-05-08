@@ -14,8 +14,8 @@ class Horse():
         horse = Horse(config.sprites.BLEDAS_HORSE)
         horse.x = random.randint(0, 640 - horse.width)
         horse.y = random.randint(0, 480 - horse.height)
-        horse._sprite.index = random.randint(0, 11)
-        horse.speed = random.uniform(3.0, 4.5)
+        horse.index = random.randint(0, 11)
+        horse.speed = random.uniform(75.0, 100.0)
         return horse
 
     def __init__(self, sprite_config):
@@ -45,6 +45,8 @@ class Horse():
 
     def advance_frame(self):
         self.index += 1
+        if self.index == 12:
+            self.index = 0
         self._sprite.set_frame(self.index)
 #        if self.index >= self.image_tex_seq.columns:
 #            self.index = 0

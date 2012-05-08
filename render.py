@@ -14,12 +14,12 @@ class Sprite(pyglet.sprite.Sprite):
                  group=None,
                  usage='dynamic'):
         self.index = 0
-#        self.textures = img
-        pyglet.sprite.Sprite.__init__(self, img, x, y, blend_src, blend_dest, batch, group, usage)
+        self.textures = img
+        pyglet.sprite.Sprite.__init__(self, self.textures[self.index], x, y, blend_src, blend_dest, batch, group, usage)
 
     def set_frame(self, index):
         self.index = index
-#        self.image = self.textures[index]
+        self.image = self.textures[index]
 
 class SpriteManager:
     def __init__(self):
@@ -39,9 +39,9 @@ class SpriteManager:
         if not self.is_registered(sprite_config):
             raise SpriteNotRegisteredError(sprite_config.spritesheet_path)
         texture = self.textures[sprite_config]
-        anim_frames = [pyglet.image.AnimationFrame(img, 0.033) for img in texture]
-        anim = pyglet.image.Animation(anim_frames)
-        sprite = Sprite(anim, batch=self.all)
+#        anim_frames = [pyglet.image.AnimationFrame(img, 0.033) for img in texture]
+#        anim = pyglet.image.Animation(anim_frames)
+        sprite = Sprite(texture, batch=self.all)
         return sprite
 
 sprite_manager = SpriteManager()
