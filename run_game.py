@@ -4,8 +4,7 @@ import characters
 import render
 import config
 import world
-import events
-import window
+from rect import Rect
 
 class MainWindow(pyglet.window.Window):
     def __init__(self):
