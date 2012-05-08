@@ -4,16 +4,33 @@ import random
 import pyglet
 import render
 import config.sprites
+import world
 
-class Horse():
+class Horse(object):
     width = 64
     height = 64
+
+    @property
+    def x(self):
+        return self._x
+    @x.setter
+    def x(self, value):
+        self._x = value
+        self._sprite.x = value
+
+    @property
+    def y(self):
+        return self._y
+    @y.setter
+    def y(self, value):
+        self._y = value
+        self._sprite.y = value
 
     @staticmethod
     def create_random():
         horse = Horse(config.sprites.BLEDAS_HORSE)
-        horse.x = random.randint(0, 640 - horse.width)
-        horse.y = random.randint(0, 480 - horse.height)
+        horse.x = random.randint(0, world.rect.width - horse.width)
+        horse.y = random.randint(0, world.rect.height - horse.height)
         horse.index = random.randint(0, 11)
         horse.speed = random.uniform(75.0, 100.0)
         return horse
@@ -22,25 +39,12 @@ class Horse():
         self._sprite = render.sprite_manager.create(sprite_config)
         self.speed = 1
         self.frame_tick = 0
-        self.x = 0
-        self.y = 0
+        self._x = 0
+        self._y = 0
         self.index = 0
         self.image = self._sprite.image
-        self.tick = 0
 
-    def update(self):
-#        print self.x, self.speed
-#        if self.x > 500:
-#            self.speed = -1
-#        elif self.x < 0:
-#            self.speed = 1
-#        self.x += self.speed
-        self._sprite.x = self.x
-#        print self.x, self.speed
-        self.tick += 1
-        if self.tick > 1:
-            self.tick = 0
-            return
+    def update(self, dt):
         self.advance_frame()
 
     def advance_frame(self):

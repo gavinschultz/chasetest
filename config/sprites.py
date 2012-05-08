@@ -1,6 +1,4 @@
 import config
-from config import SpriteConfig, AnimationConfig
+from config import SpriteConfig
 
-BLEDAS_HORSE = config.add(SpriteConfig('images/horse_skeleton_ss.png', 1, 12))
-#HORSE_RUN = config.add()
-##BLEDA = config.add_spritesheet('images/bleda_ss.png', 1, 8)
+BLEDAS_HORSE = config.add(SpriteConfig('horse_skeleton_ss.png', 1, 12))

@@ -1,4 +1,5 @@
 import pyglet
+import config
 from pyglet.gl import gl
 
 class SpriteNotRegisteredError(Exception):
@@ -28,7 +29,7 @@ class SpriteManager:
 
     def register_spritesheet(self, sprite_config):
         print('Registering spritesheet {0}'.format(sprite_config.spritesheet_path))
-        image = pyglet.image.load(sprite_config.spritesheet_path)
+        image = pyglet.resource.image(sprite_config.spritesheet_path)
         image_seq = pyglet.image.ImageGrid(image, sprite_config.rows, sprite_config.columns)
         self.textures[sprite_config] = pyglet.image.TextureGrid(image_seq)
 
@@ -45,6 +46,14 @@ class SpriteManager:
         return sprite
 
 sprite_manager = SpriteManager()
+overlays = []
+
+def init():
+    gl.glClearColor(1, 1, 1, 1)
+    for sheet in config.spritesheets:
+        sprite_manager.register_spritesheet(sheet)
 
 def draw():
     sprite_manager.all.draw()
+    for overlay in overlays:
+        overlay.draw()
