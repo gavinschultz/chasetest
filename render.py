@@ -27,10 +27,10 @@ class SpriteManager:
         self.all = pyglet.graphics.Batch()
         self.textures = {}
 
-    def register_spritesheet(self, sprite_config):
-        print('Registering spritesheet {0}'.format(sprite_config.spritesheet_path))
-        image = pyglet.resource.image(sprite_config.spritesheet_path)
-        image_seq = pyglet.image.ImageGrid(image, sprite_config.rows, sprite_config.columns)
+    def register_sprite(self, sprite_config):
+        print('Registering sprite {0}'.format(sprite_config.name))
+        image = pyglet.resource.image(sprite_config.image_path)
+        image_seq = pyglet.image.ImageGrid(image, 1, 12)
         self.textures[sprite_config] = pyglet.image.TextureGrid(image_seq)
 
     def is_registered(self, sprite_config):
@@ -38,7 +38,7 @@ class SpriteManager:
 
     def create(self, sprite_config, start_index=0):
         if not self.is_registered(sprite_config):
-            raise SpriteNotRegisteredError(sprite_config.spritesheet_path)
+            raise SpriteNotRegisteredError(sprite_config.image_path)
         texture = self.textures[sprite_config]
 #        anim_frames = [pyglet.image.AnimationFrame(img, 0.033) for img in texture]
 #        anim = pyglet.image.Animation(anim_frames)
@@ -51,7 +51,7 @@ overlays = []
 def init():
     gl.glClearColor(1, 1, 1, 1)
     for sheet in config.spritesheets:
-        sprite_manager.register_spritesheet(sheet)
+        sprite_manager.register_sprite(sheet)
 
 def draw():
     sprite_manager.all.draw()
