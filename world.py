@@ -9,7 +9,7 @@ rect = Rect(0,0,0,0)
 def init():
     global rect
     rect = config.world_rect
-    for i in range(2):
+    for i in range(25):
         horses.append(characters.Horse.create_random())
 
 def set_rect(new_rect):

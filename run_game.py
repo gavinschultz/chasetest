@@ -10,7 +10,7 @@ class MainWindow(pyglet.window.Window):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.fps_display = pyglet.clock.ClockDisplay()
-        render.overlays.append(self.fps_display.label)
+        render.register_overlay(self.fps_display.label)
 
 window = MainWindow()
 
@@ -23,7 +23,7 @@ def draw(dt):
 def on_key_press(symbol, modifiers):
     if symbol == key.ESCAPE:
         exit()
-    if symbol == key.ENTER and (modifiers & key.MOD_ALT):
+    if symbol == key.ENTER and (modifiers & key.MOD_SHIFT):
         window.set_fullscreen(not window.fullscreen)
         world.set_rect(Rect(0,0,window.width,window.height))
 
