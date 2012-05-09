@@ -3,8 +3,8 @@ import os
 import random
 import pyglet
 import render
-import config.sprites
 import world
+import config
 
 class Horse(object):
     width = 64
@@ -28,7 +28,7 @@ class Horse(object):
 
     @staticmethod
     def create_random():
-        horse = Horse(config.sprites.BLEDAS_HORSE)
+        horse = Horse(config.BLEDAS_HORSE)
         horse.x = random.randint(0, world.rect.width - horse.width)
         horse.y = random.randint(0, world.rect.height - horse.height)
         horse.index = random.randint(0, 11)
@@ -36,13 +36,12 @@ class Horse(object):
         return horse
 
     def __init__(self, sprite_config):
-        self._sprite = render.sprite_manager.create(sprite_config)
+        self._sprite = sprite_config # render.sprite_manager.create(sprite_config)
         self.speed = 1
         self.frame_tick = 0
         self._x = 0
         self._y = 0
         self.index = 0
-        self.image = self._sprite.image
 
     def update(self, dt):
         self.advance_frame()

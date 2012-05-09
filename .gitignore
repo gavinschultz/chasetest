@@ -30,3 +30,6 @@ pip-log.txt
 
 # PyScripter
 *.psproj
+*.project
+*.pydevproject
+*.settings
