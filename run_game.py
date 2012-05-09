@@ -28,7 +28,6 @@ def on_key_press(symbol, modifiers):
         world.set_rect(Rect(0,0,window.width,window.height))
 
 def main():
-    print(config.BLEDAS_HORSE)
     render.init()
     world.init()
 

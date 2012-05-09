@@ -9,6 +9,8 @@ import config
 class Horse(object):
     width = 64
     height = 64
+    min_speed = 75.0
+    max_speed = 120.0
 
     @property
     def x(self):
@@ -31,12 +33,13 @@ class Horse(object):
         horse = Horse(config.BLEDAS_HORSE)
         horse.x = random.randint(0, world.rect.width - horse.width)
         horse.y = random.randint(0, world.rect.height - horse.height)
-        horse.index = random.randint(0, 11)
-        horse.speed = random.uniform(75.0, 100.0)
+        horse.index = random.randint(0, len(horse._sprite.frames))
+        horse.speed = random.uniform(horse.min_speed, horse.max_speed)
         return horse
 
     def __init__(self, sprite_config):
-        self._sprite = sprite_config # render.sprite_manager.create(sprite_config)
+        self._sprite = render.AnimatedSprite(sprite_config)
+        render.register_sprite(self._sprite)
         self.speed = 1
         self.frame_tick = 0
         self._x = 0
@@ -44,15 +47,4 @@ class Horse(object):
         self.index = 0
 
     def update(self, dt):
-        self.advance_frame()
-
-    def advance_frame(self):
-        self.index += 1
-        if self.index == 12:
-            self.index = 0
-        self._sprite.set_frame(self.index)
-#        if self.index >= self.image_tex_seq.columns:
-#            self.index = 0
-#        self.sprite.image = self.image_tex_seq[self.index]
-#        print self.index
-#            self.sprite.image = self.sprite_sheet.next()
+        self._sprite.animate(dt)

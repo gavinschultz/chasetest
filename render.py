@@ -7,7 +7,7 @@ class SpriteNotRegisteredError(Exception):
 
 class AnimatedSprite(pyglet.sprite.Sprite):
     def __init__(self,
-                 name, spritesheet, size, frames, 
+                 (name, spritesheet, size, frames),
                  starting_frame=0,
                  blend_src=gl.GL_SRC_ALPHA,
                  blend_dest=gl.GL_ONE_MINUS_SRC_ALPHA,
@@ -19,15 +19,23 @@ class AnimatedSprite(pyglet.sprite.Sprite):
         self.size = size
         self.dt_accumulator = 0.0
         self.frames = frames
+        self.current_frame = starting_frame
         
-        image_seq = pyglet.image.ImageGrid(spritesheet, 1, len(frames))
-        self.spritesheet = pyglet.image.TextureGrid(image_seq)
+        cell_count = spritesheet.width // size
+        self.spritesheet = pyglet.image.ImageGrid(spritesheet, 1, cell_count).get_texture_sequence()
 #        self._set_texture(pyglet.image.TextureGrid(image_seq))
         
-        pyglet.sprite.Sprite.__init__(self, self.spritesheet[starting_frame], 0, 0, blend_src, blend_dest, batch, group, usage)
+        pyglet.sprite.Sprite.__init__(self, self.spritesheet[self.current_frame], 0, 0, blend_src, blend_dest, batch, group, usage)
 
     def set_frame(self, frame):
+        self.current_frame = frame
         self.image = self.spritesheet[frame]
+        
+    def animate(self, dt):
+        self.dt_accumulator += dt
+        frame_increment, self.dt_accumulator = divmod(self.frames[self.current_frame], dt)
+        self.current_frame = int(divmod(self.current_frame + frame_increment, len(self.frames)-1)[0])
+        print((dt, self.dt_accumulator, frame_increment, self.current_frame)) 
 
 class SpriteManager:
     def __init__(self):
@@ -54,6 +62,10 @@ class SpriteManager:
 
 sprite_manager = SpriteManager()
 overlays = []
+sprites = pyglet.graphics.Batch()
+
+def register_sprite(sprite):
+    sprite.batch = sprites
 
 def init():
     gl.glClearColor(1, 1, 1, 1)
@@ -61,6 +73,7 @@ def init():
 #        sprite_manager.register_sprite(sheet)
 
 def draw():
-    sprite_manager.all.draw()
+#    sprite_manager.all.draw()
+    sprites.draw()
     for overlay in overlays:
         overlay.draw()
