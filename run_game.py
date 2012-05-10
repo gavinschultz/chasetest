@@ -1,5 +1,6 @@
 import pyglet
 from pyglet.window import key
+from pyglet.window import mouse
 import characters
 import render
 import config
@@ -26,6 +27,13 @@ def on_key_press(symbol, modifiers):
     if symbol == key.ENTER and (modifiers & key.MOD_SHIFT):
         window.set_fullscreen(not window.fullscreen)
         world.set_rect(Rect(0,0,window.width,window.height))
+
+@window.event    
+def on_mouse_press(x, y, button, modifiers):
+    if button == mouse.LEFT:
+        selected_horses = [h for h in world.horses if h.rect.includes(x, y)]
+        if selected_horses: 
+            render.selected_rect_and_text = selected_horses[0].rect, str(','.join(['{0:.2}'.format(f) for f in selected_horses[0]._sprite.frame_transforms['random with emphasis'][::3]]))
 
 def main():
     render.init()

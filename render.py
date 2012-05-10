@@ -34,16 +34,17 @@ class AnimatedSprite(pyglet.sprite.Sprite):
         self.image = self.spritesheet[frame] 
     
     def animate(self, dt):
-        frames = self.frames
+        self.tranformed_frames = self.frames
 #        print frames
         for frame_transform in self.frame_transforms.values():
-            frames = [a*b for a, b in zip(frames, frame_transform)]
+            self.tranformed_frames = [a*b for a, b in zip(self.tranformed_frames, frame_transform)]
 #        print frames
         self.dt_accumulator += dt
-        frame_increment, self.dt_accumulator = divmod(self.dt_accumulator, frames[self.current_frame])
-        self.set_frame(int(divmod(self.current_frame + frame_increment, len(frames)-1)[1]))
+        frame_increment, self.dt_accumulator = divmod(self.dt_accumulator, self.tranformed_frames[self.current_frame])
+        self.set_frame(int(divmod(self.current_frame + frame_increment, len(self.tranformed_frames)-1)[1]))
 #        print((dt, self.dt_accumulator, frame_increment, self.current_frame)) 
 
+selected_rect_and_text = None
 overlays = pyglet.graphics.Batch()
 sprites = pyglet.graphics.Batch()
 
@@ -52,6 +53,23 @@ def register_sprite(sprite):
     
 def register_overlay(overlay):
     overlay.batch = overlays
+    
+def draw_rect_and_text(rect, text):
+    pyglet.graphics.gl.glPolygonMode(pyglet.gl.GL_FRONT_AND_BACK, pyglet.gl.GL_LINE)
+    pyglet.graphics.draw_indexed(4, pyglet.gl.GL_QUADS,
+                          [0, 1, 2, 3],
+#                         [0, 1, 2, 0, 2, 3], 
+                         ('v2f', (rect.left, rect.bottom, 
+                                  rect.left, rect.top, 
+                                  rect.right, rect.top, 
+                                  rect.right, rect.bottom))
+                         ,('c3B', (255, 0, 0, 
+                                  255, 0, 0, 
+                                  255, 0, 0, 
+                                  255, 0, 0))
+    )
+    pyglet.graphics.gl.glPolygonMode(pyglet.gl.GL_FRONT_AND_BACK, pyglet.gl.GL_FILL)
+    pyglet.text.Label(text, font_size=8, color=(255, 0, 0, 255), x=rect.left, y=rect.top).draw()
 
 def init():
     gl.glClearColor(1, 1, 1, 1)
@@ -59,3 +77,5 @@ def init():
 def draw():
     sprites.draw()
     overlays.draw()
+    if selected_rect_and_text:
+        draw_rect_and_text(*selected_rect_and_text)
