@@ -64,8 +64,8 @@ class Horse(object):
     def _random_by_speed(self):
         return [self.median_speed / (self.speed + ((self.median_speed - self.speed)/2))] * len(self._sprite.frames)
 
-    def __init__(self, sprite_config):
-        self._sprite = render.AnimatedSprite(sprite_config)
+    def __init__(self, image):
+        self._sprite = render.AnimatedSprite(image)
         render.register_sprite(self._sprite)
         self.speed = 1
         self.frame_tick = 0

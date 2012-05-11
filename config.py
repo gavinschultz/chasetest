@@ -7,13 +7,14 @@ pyglet.resource.reindex()
 
 frames_per_second = 75.0
 updates_per_second = 60.0
-world_rect = Rect(0,0,640,480)
+world_rect = Rect(0,0,1000,256)
 window_rect = world_rect
 
 _horse_basic1 = pyglet.resource.image('horse_skeleton_ss.png')
+_bg_texture = pyglet.resource.image('bg1.png')
 
 BLEDAS_HORSE = ('Bleda\'s Horse', _horse_basic1, 64, [1/30.0 for x in range(12)])
-
+BG1 = _bg_texture
 
 ##horse
 ##    animation 1 - name = 'gallop 1', spritesheet = 'horse_skeleton_ss.png'

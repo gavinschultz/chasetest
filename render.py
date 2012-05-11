@@ -47,6 +47,8 @@ overlays = pyglet.graphics.Batch()
 sprites = pyglet.graphics.Batch()
 draw_funcs = []
 offset = [0.0,0.0,0.0]
+bg_sprites = []
+bg = pyglet.graphics.Batch()
 
 def register_sprite(sprite):
     sprite.batch = sprites
@@ -62,11 +64,20 @@ def init():
     gl.glClearColor(1, 1, 1, 1)
 
 def draw():
-    offset[0] += 1.0
+    offset[0] -= 0.5
     pyglet.gl.glPushMatrix()
     pyglet.gl.glTranslatef(*offset)
+    draw_background()
+    pyglet.gl.glPopMatrix()
+    sprites.draw()
     for func in draw_funcs:
         func()
-    sprites.draw()
-    pyglet.gl.glPopMatrix()
     overlays.draw()
+
+def register_background(image):
+    for i in range(0,5):
+        s = pyglet.sprite.Sprite(image, x=i*256.0, y=0, batch=bg)
+        bg_sprites.append(s)
+
+def draw_background():
+    bg.draw()

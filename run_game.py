@@ -10,14 +10,20 @@ import debug
 
 class MainWindow(pyglet.window.Window):
     def __init__(self):
-        super(MainWindow, self).__init__()
+        display = pyglet.canvas.get_display()
+        screen = display.get_default_screen()
+        width = 1000
+        height = 256
+        x = (screen.width - width) / 2
+        y = (screen.height - height) / 4
+        super(MainWindow, self).__init__(width=width, height=height)
+        self.set_location(x, y)
 
 window = MainWindow()
 
 def draw(dt):
     window.clear()
     render.draw()
-#    window.fps_display.draw()
     window.flip()
 
 @window.event
@@ -35,6 +41,8 @@ def on_mouse_press(x, y, button, modifiers):
 def main():
     render.init()
     world.init()
+
+    render.register_background(config.BG1)
 
     pyglet.app.event_loop.idle = idle
     pyglet.clock.schedule_interval(world.update, 1.0/config.updates_per_second)

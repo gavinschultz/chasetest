@@ -1,5 +1,6 @@
 import pyglet
 from pyglet.window import mouse
+from pyglet.gl import *
 import render
 import world
 
@@ -20,14 +21,14 @@ def handle_mouse_press(x, y, button, modifiers):
 def draw():
     if _selected_rect:
         _draw_rect_and_text(_selected_rect, _text)
-    pyglet.gl.glPushMatrix()
-    pyglet.gl.glLoadIdentity()
+    glPushMatrix()
+    glLoadIdentity()
     _fps_display.draw()
-    pyglet.gl.glPopMatrix()
+    glPopMatrix()
 
 def _draw_rect_and_text(rect, text):
-    pyglet.graphics.gl.glPolygonMode(pyglet.gl.GL_FRONT_AND_BACK, pyglet.gl.GL_LINE)
-    pyglet.graphics.draw_indexed(4, pyglet.gl.GL_QUADS,
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+    pyglet.graphics.draw_indexed(4, GL_QUADS,
                           [0, 1, 2, 3],
                          ('v2f', (rect.left, rect.bottom, 
                                   rect.left, rect.top, 
@@ -38,7 +39,7 @@ def _draw_rect_and_text(rect, text):
                                   255, 0, 0, 
                                   255, 0, 0))
     )
-    pyglet.graphics.gl.glPolygonMode(pyglet.gl.GL_FRONT_AND_BACK, pyglet.gl.GL_FILL)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
     pyglet.text.Label(text, font_size=8, color=(255, 0, 0, 255), x=rect.left, y=rect.top).draw()
 
 render.register_draw_func(draw)
