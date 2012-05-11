@@ -23,7 +23,6 @@ class AnimatedSprite(pyglet.sprite.Sprite):
         self.current_frame = starting_frame
         self.frame_transforms = {}
         self.spritesheet = pyglet.image.ImageGrid(spritesheet, 1, cell_count).get_texture_sequence()
-        
         pyglet.sprite.Sprite.__init__(self, self.spritesheet[self.current_frame], 0, 0, blend_src, blend_dest, batch, group, usage)
 
     def register_frame_transform(self, name, frame_transform):
@@ -44,38 +43,30 @@ class AnimatedSprite(pyglet.sprite.Sprite):
         self.set_frame(int(divmod(self.current_frame + frame_increment, len(self.tranformed_frames)-1)[1]))
 #        print((dt, self.dt_accumulator, frame_increment, self.current_frame)) 
 
-selected_rect_and_text = None
 overlays = pyglet.graphics.Batch()
 sprites = pyglet.graphics.Batch()
+draw_funcs = []
+offset = [0.0,0.0,0.0]
 
 def register_sprite(sprite):
     sprite.batch = sprites
     
 def register_overlay(overlay):
-    overlay.batch = overlays
+    pass
+#    overlay.batch = overlays
     
-def draw_rect_and_text(rect, text):
-    pyglet.graphics.gl.glPolygonMode(pyglet.gl.GL_FRONT_AND_BACK, pyglet.gl.GL_LINE)
-    pyglet.graphics.draw_indexed(4, pyglet.gl.GL_QUADS,
-                          [0, 1, 2, 3],
-#                         [0, 1, 2, 0, 2, 3], 
-                         ('v2f', (rect.left, rect.bottom, 
-                                  rect.left, rect.top, 
-                                  rect.right, rect.top, 
-                                  rect.right, rect.bottom))
-                         ,('c3B', (255, 0, 0, 
-                                  255, 0, 0, 
-                                  255, 0, 0, 
-                                  255, 0, 0))
-    )
-    pyglet.graphics.gl.glPolygonMode(pyglet.gl.GL_FRONT_AND_BACK, pyglet.gl.GL_FILL)
-    pyglet.text.Label(text, font_size=8, color=(255, 0, 0, 255), x=rect.left, y=rect.top).draw()
+def register_draw_func(func):
+    draw_funcs.append(func)
 
 def init():
     gl.glClearColor(1, 1, 1, 1)
 
 def draw():
+    offset[0] += 1.0
+    pyglet.gl.glPushMatrix()
+    pyglet.gl.glTranslatef(*offset)
+    for func in draw_funcs:
+        func()
     sprites.draw()
+    pyglet.gl.glPopMatrix()
     overlays.draw()
-    if selected_rect_and_text:
-        draw_rect_and_text(*selected_rect_and_text)

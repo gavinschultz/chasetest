@@ -6,18 +6,18 @@ import render
 import config
 import world
 from rect import Rect
+import debug
 
 class MainWindow(pyglet.window.Window):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.fps_display = pyglet.clock.ClockDisplay()
-        render.register_overlay(self.fps_display.label)
 
 window = MainWindow()
 
 def draw(dt):
     window.clear()
     render.draw()
+#    window.fps_display.draw()
     window.flip()
 
 @window.event
@@ -30,10 +30,7 @@ def on_key_press(symbol, modifiers):
 
 @window.event    
 def on_mouse_press(x, y, button, modifiers):
-    if button == mouse.LEFT:
-        selected_horses = [h for h in world.horses if h.rect.includes(x, y)]
-        if selected_horses: 
-            render.selected_rect_and_text = selected_horses[0].rect, str(','.join(['{0:.2}'.format(f) for f in selected_horses[0]._sprite.frame_transforms['random with emphasis'][::3]]))
+    debug.handle_mouse_press(x, y, button, modifiers)
 
 def main():
     render.init()
