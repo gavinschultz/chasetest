@@ -18,7 +18,7 @@ def set_rect(new_rect):
 
 def update(dt):
     for horse in horses:
-#        horse.x -= horse.speed * dt
+        horse.x -= horse.speed * dt
         if horse.x + horse.width < 0:
             horse.speed = random.uniform(horse.min_speed, horse.max_speed)
             horse.x = rect.width
