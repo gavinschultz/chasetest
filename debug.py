@@ -17,7 +17,7 @@ def handle_mouse_press(x, y, button, modifiers):
         if selected_horses:
             _selected_rect = selected_horses[0].rect
             text = str(','.join(['{0:.2}'.format(f) for f in selected_horses[0]._sprite.frame_transforms['random with emphasis'][::3]]))
-            _selected_rect_label = pyglet.text.Label(text, font_size=8, color=(255, 0, 0, 255), x=_selected_rect.left, y=_selected_rect.top)
+            _selected_rect_label = pyglet.text.Label(text, font_size=8, color=(255, 0, 0, 255), x=_fps_display.label.x, y=_fps_display.label.height)
 
 def draw():
     if _selected_rect:
@@ -41,8 +41,7 @@ def _draw_rect_and_text(rect, label):
                                   255, 0, 0))
     )
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-    label.x, label.y = rect.left, rect.top
-    print label.x, rect.left
-    label.draw()
+    if label:
+        label.draw()
 
 render.register_draw_func(draw)
